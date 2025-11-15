@@ -1,14 +1,13 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Eventify Project",
+  "description": "Event Management Platform",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
     "dev": "nodemon server"
   },
-  "author": "Guven Fazli",
   "license": "ISC",
   "dependencies": {
     "@sequelize/postgres": "^7.0.0-alpha.44",

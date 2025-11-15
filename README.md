@@ -1,6 +1,6 @@
-# Eventify
+# EventManager
 
-**Eventify** is a full-stack event management platform that allows users to explore, filter, and register for events while enabling admins to create and manage events efficiently.
+**EventManager** is a full-stack event management platform that allows users to explore, filter, and register for events while enabling admins to create and manage events efficiently.
 
 # Tech Stack
 **Frontend**

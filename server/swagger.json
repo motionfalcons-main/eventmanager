@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Eventify API Documentation",
+    "title": "EventManager API Documentation",
     "version": "1.0.0",
-    "description": "API documentation for FullStack Application Eventify"
+    "description": "API documentation for FullStack Application EventManager"
   },
   "servers": [
     {
@@ -229,7 +229,7 @@
                   "properties": {
                     "message": {
                       "type": "string",
-                      "example": "Thank you for choosing Eventify!"
+                      "example": "Thank you for choosing EventManager!"
                     }
                   }
                 }

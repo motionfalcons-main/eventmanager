@@ -290,7 +290,7 @@ exports.buyTicket = async (req, res, next) => {
       const doc = new PDFDocument()
 
 
-      const qrCodeData = `https://eventify.com/events/${foundTicket.event.id}`
+      const qrCodeData = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/event/${foundTicket.event.id}`
 
       const stringQr = JSON.stringify(qrCodeData)
 
@@ -305,11 +305,11 @@ exports.buyTicket = async (req, res, next) => {
       doc.image(qrFilePath, 150, 150, { width: 200, height: 200 })
       doc.text('----------------------------------------------------------------------')
       doc.text(`Your Ticket Invoice for ${foundTicket.title} X ${anotherPayment.totalQuantity} = ${anotherPayment.totalPrice} EUR`)
-      doc.text('Thank you for choosing Eventify!')
+      doc.text('Thank you for choosing EventManager!')
       doc.text('----------------------------------------------------------------------')
       doc.end()
 
-      res.status(200).json({ message: 'Thank you for choosing Eventify!' })
+      res.status(200).json({ message: 'Thank you for choosing EventManager!' })
       return;
     }
 
@@ -330,7 +330,7 @@ exports.buyTicket = async (req, res, next) => {
 
     const doc = new PDFDocument()
 
-    const qrCodeData = `https://eventify.com/events/${foundTicket.event.id}`
+    const qrCodeData = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/event/${foundTicket.event.id}`
 
     const stringQr = JSON.stringify(qrCodeData)
 
@@ -344,12 +344,12 @@ exports.buyTicket = async (req, res, next) => {
       doc.image(qrFilePath, 150, 150, { width: 200, height: 200 })
       doc.text('----------------------------------------------------------------------')
       doc.text(`Your Ticket Invoice for ${foundTicket.title} X ${boughtTicket.totalQuantity} = ${boughtTicket.totalPrice} EUR`)
-      doc.text('Thank you for choosing Eventify!')
+      doc.text('Thank you for choosing EventManager!')
       doc.text('----------------------------------------------------------------------')
       doc.end()
     })
 
-    res.status(200).json({ message: 'Thank you for choosing Eventify!' })
+    res.status(200).json({ message: 'Thank you for choosing EventManager!' })
     return;
 
   } catch (err) {

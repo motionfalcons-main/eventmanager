@@ -76,7 +76,7 @@ Ticket.belongsToMany(User, { through: UserTicket })
 /* Middlewares */
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:3000'
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000'
 }))
 app.use(cookieparser())
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).array('eventImage', 1))
@@ -95,6 +95,11 @@ app.use( // Session store for Sequelize with Dialect PostgreSQL.
   })
 );
 
+/* Health Check Endpoint */
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Server is running' })
+})
+
 /* Routes */
 
 app.use('/auth', authRouter)
@@ -109,7 +114,8 @@ app.use((error, req, res, next) => {
 })
 
 sequelize.sync().then((res) => {
-  app.listen(8080, () => {
-    console.log('Server is on.')
+  const PORT = process.env.PORT || 8080
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`)
   })
 }).catch(err => console.log(err));

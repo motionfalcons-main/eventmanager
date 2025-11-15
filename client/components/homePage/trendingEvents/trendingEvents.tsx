@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import EventsSection from "../upcomingEvents/eventsSection/eventsSection"
 
 interface event {

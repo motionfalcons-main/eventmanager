@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import EventsSection from "../upcomingEvents/eventsSection/eventsSection"
 
 interface event {
@@ -32,35 +32,47 @@ export default function TrendingEvents({ trendingList, isLimit }: ComponentProps
   const [isMaxedEvents, setIsMaxedEvents] = useState<boolean>(isLimit)
   const [page, setPage] = useState<number>(6)
 
+  // Update local state when props change
   useEffect(() => {
-    async function fetchMoreEvents() {
-      try {
-        setIsLoading(true)
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/trendingWorldEvents?page=${page}`, {
-          credentials: "include"
-        })
+    setEventList(trendingList || [])
+    setIsMaxedEvents(isLimit || false)
+  }, [trendingList, isLimit])
 
-        if (!response.ok) {
-          const resData = await response.json()
-          const error = new Error(resData)
-          throw error
+  const fetchMoreEvents = async (pageNum: number) => {
+    try {
+      setIsLoading(true)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/trendingWorldEvents?page=${pageNum}`, {
+        credentials: "include"
+      })
+
+      if (!response.ok) {
+        // Don't throw error on 401 - just stop loading
+        if (response.status === 401 || response.status === 440) {
+          setIsLoading(false)
+          setIsMaxedEvents(true)
+          return
         }
-
         const resData = await response.json()
-        setEventList(resData.foundEvents || [])
-        setIsMaxedEvents(resData.isLimit || false)
-        setIsLoading(false)
-      } catch (err: unknown) {
-        const error = err as { message: string }
-        setIsLoading(false)
+        const error = new Error(resData)
+        throw error
       }
-    }
 
-    if (page >= 6) {
-      fetchMoreEvents()
+      const resData = await response.json()
+      setEventList(prev => [...prev, ...(resData.foundEvents || [])])
+      setIsMaxedEvents(resData.isLimit || false)
+      setIsLoading(false)
+    } catch (err: unknown) {
+      const error = err as { message: string }
+      setIsLoading(false)
+      setIsMaxedEvents(true)
     }
+  }
 
-  }, [page, setPage])
+  const handleSeeMore = () => {
+    const newPage = page + 6
+    setPage(newPage)
+    fetchMoreEvents(newPage)
+  }
 
   return (
     <div className="flex flex-col justify-start items-start w-full">
@@ -71,7 +83,7 @@ export default function TrendingEvents({ trendingList, isLimit }: ComponentProps
       <div className="flex flex-col justify-start gap-5 items-start w-full">
         <EventsSection eventList={eventList} />
         <div className="flex w-full justify-center items-center">
-          <button disabled={isMaxedEvents || isLoading} onClick={() => setPage(prev => prev += 6)}
+          <button disabled={isMaxedEvents || isLoading} onClick={handleSeeMore}
             className="w-1/3 py-3 rounded-md text-[#2B293D] border-2 border-[#2B293D] font-opensans font-semibold text-[24px] hover:bg-[#2B293D] hover:text-white duration-150 ease-in-out disabled:pointer-events-none disabled:text-[#2B293D]/50 disabled:border-[#2B293D]/30 ">
             {isLoading ? 'Loading...' : 'See More'}
           </button>

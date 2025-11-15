@@ -9,6 +9,13 @@ const nextConfig: NextConfig = {
       port: '8080',
       pathname: '**'
     }]
+  },
+  // Ensure proper module resolution
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+    };
+    return config;
   }
   /* config options here */
 };

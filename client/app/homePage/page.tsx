@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import GreetSection from "@/components/homePage/greetSection/greetSection"
 import ExploreCategories from "@/components/homePage/exploreCategories/exploreCategories"
 import PopularEvents from "@/components/homePage/upcomingEvents/popularEvents"
@@ -16,8 +16,14 @@ export default function Page() {
   } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const hasRedirected = useRef(false)
+  const hasFetched = useRef(false)
 
   useEffect(() => {
+    // Prevent multiple fetches
+    if (hasFetched.current) return
+    hasFetched.current = true
+
     async function fetchTrendingEvents() {
       try {
         setIsLoading(true)
@@ -33,9 +39,10 @@ export default function Page() {
         }).finally(() => clearTimeout(timeoutId))
 
         if (!response.ok) {
-          // If unauthorized, redirect to login
-          if (response.status === 401 || response.status === 440) {
-            router.push('/')
+          // If unauthorized, redirect to login (only once)
+          if ((response.status === 401 || response.status === 440) && !hasRedirected.current) {
+            hasRedirected.current = true
+            window.location.href = '/' // Use window.location instead of router.push to prevent re-renders
             return
           }
           // For other errors, show empty state
@@ -52,8 +59,12 @@ export default function Page() {
         })
         setIsLoading(false)
       } catch (err: unknown) {
-        console.error('Error loading home page:', err)
-        // Show empty state on error
+        // Don't redirect on network errors, just show empty state
+        if (err instanceof Error && err.name === 'AbortError') {
+          console.log('Request timed out')
+        } else {
+          console.error('Error loading home page:', err)
+        }
         setTrendingList({ foundEvents: [], countryList: [], isLimit: true })
         setIsLoading(false)
         setError('Failed to load events')
@@ -61,7 +72,7 @@ export default function Page() {
     }
 
     fetchTrendingEvents()
-  }, [router])
+  }, [])
 
   if (isLoading) {
     return (

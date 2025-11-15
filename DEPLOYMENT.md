@@ -71,16 +71,32 @@ NEXT_PUBLIC_API_URL=https://your-backend-service.onrender.com
    git push origin main
    ```
 
-2. **Deploy via Render Blueprint**
+2. **Create PostgreSQL Database First** (Required - Blueprint doesn't create databases)
+   - Go to [render.com](https://render.com)
+   - Click "New" → "PostgreSQL"
+   - Name: `eventmanager-db`
+   - Plan: Starter (or Free for testing)
+   - Click "Create Database"
+   - **Copy the Internal Database URL** (you'll need this)
+
+3. **Deploy via Render Blueprint**
    - Go to [render.com](https://render.com)
    - Click "New" → "Blueprint"
    - Connect your GitHub repository
    - Render will automatically detect `render.yaml`
    - Review and deploy
+   - This will create your backend and frontend services
 
-3. **Configure Environment Variables**
-   - After services are created, add environment variables in each service's dashboard
-   - Use the list above as reference
+4. **Configure Environment Variables**
+   - **Backend Service:**
+     - Go to your backend service → Environment
+     - Add `DATABASE_URL` = (paste the Internal Database URL from step 2)
+     - Add `FRONTEND_URL` = (your frontend service URL, e.g., `https://eventmanager-frontend.onrender.com`)
+     - Add `DB_SESSION_SECRET` = (generate a random string)
+     - Add `REDIS_URL` = (if you created Redis, optional)
+   - **Frontend Service:**
+     - Go to your frontend service → Environment
+     - Add `NEXT_PUBLIC_API_URL` = (your backend service URL, e.g., `https://eventmanager-backend.onrender.com`)
 
 ### Option 2: Manual Deployment
 

@@ -32,14 +32,27 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
-/* Redis Setup */
+/* Redis Setup - Optional, app will work without Redis */
 
 async function createRedis() {
-  redisClient.on('error', err => console.log('Redis Client Error', err))
-  await redisClient.connect()
+  try {
+    redisClient.on('error', err => {
+      console.log('Redis Client Error (non-fatal):', err.message)
+      // Don't throw - allow app to continue without Redis
+    })
+    await redisClient.connect()
+    console.log('Redis connected successfully')
+  } catch (err) {
+    console.log('Redis connection failed (non-fatal):', err.message)
+    console.log('App will continue without Redis caching')
+    // Don't throw - allow app to continue without Redis
+  }
 }
 
-createRedis()
+// Connect to Redis if available, but don't block app startup
+createRedis().catch(() => {
+  console.log('Redis unavailable - app running without cache')
+})
 
 
 

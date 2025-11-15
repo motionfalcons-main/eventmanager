@@ -18,5 +18,53 @@ if (process.env.REDIS_URL) {
 
 const client = createClient(redisConfig)
 
+// Add helper methods that handle connection errors gracefully
+const safeRedis = {
+  isConnected: false,
+  
+  async get(key) {
+    if (!this.isConnected) return null
+    try {
+      return await client.get(key)
+    } catch (err) {
+      console.log('Redis get error (non-fatal):', err.message)
+      return null
+    }
+  },
+  
+  async set(key, value, options) {
+    if (!this.isConnected) return
+    try {
+      await client.set(key, value, options)
+    } catch (err) {
+      console.log('Redis set error (non-fatal):', err.message)
+    }
+  },
+  
+  async del(key) {
+    if (!this.isConnected) return
+    try {
+      await client.del(key)
+    } catch (err) {
+      console.log('Redis del error (non-fatal):', err.message)
+    }
+  }
+}
+
+// Set connection status
+client.on('connect', () => {
+  safeRedis.isConnected = true
+})
+
+client.on('error', () => {
+  safeRedis.isConnected = false
+})
+
+client.on('end', () => {
+  safeRedis.isConnected = false
+})
+
+// Export both the client and safe wrapper
 module.exports = client
+module.exports.safe = safeRedis
 

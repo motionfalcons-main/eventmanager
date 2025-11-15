@@ -18,7 +18,7 @@ services:
     name: eventmanager-frontend
     runtime: node
     plan: starter
-    buildCommand: cd client && npm install --include=dev && npm run build
+    buildCommand: cd client && NODE_ENV=development npm install && NODE_ENV=production npm run build
     startCommand: cd client && npm start
     envVars:
       - key: NODE_ENV

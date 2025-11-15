@@ -45,7 +45,7 @@ export default function PopularEvents() {
       try {
         setIsLoading(true)
         setIsError(false)
-        const response = await fetch(`http://localhost:8080/upcomingEvents?page=${page}&start=${days.start}&end=${days.end}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/upcomingEvents?page=${page}&start=${days.start}&end=${days.end}`, {
           credentials: "include"
         })
 

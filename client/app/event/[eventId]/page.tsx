@@ -52,7 +52,7 @@ export default async function Page({ params }: ComponentProps) {
   const cookie = cookies()
 
   try {
-    const response = await fetch(`http://localhost:8080/getEvent/${eventId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/getEvent/${eventId}`, {
       headers: { Cookie: (await cookie).toString() }
     })
 

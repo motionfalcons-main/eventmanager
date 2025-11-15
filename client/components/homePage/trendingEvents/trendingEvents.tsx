@@ -36,7 +36,7 @@ export default function TrendingEvents({ trendingList, isLimit }: ComponentProps
     async function fetchMoreEvents() {
       try {
         setIsLoading(true)
-        const response = await fetch(`http://localhost:8080/trendingWorldEvents?page=${page}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/trendingWorldEvents?page=${page}`, {
           credentials: "include"
         })
 

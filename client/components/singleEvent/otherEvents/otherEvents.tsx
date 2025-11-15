@@ -47,7 +47,7 @@ export default function OtherEvents({ event }: ComponentProps) {
     async function fetchSimilarEvents() {
       try {
         setIsLoading(true)
-        const response = await fetch(`http://localhost:8080/similarEvents?location=${event.location}&category=${event.category}&id=${event.id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/similarEvents?location=${event.location}&category=${event.category}&id=${event.id}`, {
           credentials: "include"
         })
 

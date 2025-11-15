@@ -26,7 +26,7 @@ export default function CardLeft({ event }: ComponentProps) {
   const formattedImgUrl = event.imageURL.replaceAll(/\\/g, '/')
 
   return (
-    <div className={`flex w-1/3 rounded-tl-lg rounded-tr-lg rounded-br-lg min-h-[208px] relative bg-[url(http://localhost:8080/${formattedImgUrl})] bg-center bg-cover`}>
+    <div className={`flex w-1/3 rounded-tl-lg rounded-tr-lg rounded-br-lg min-h-[208px] relative bg-[url(${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/${formattedImgUrl})] bg-center bg-cover`}>
       <HalfImageShowcase imgURL={formattedImgUrl} />
       <TagCard eventTag={event.category} />
     </div>

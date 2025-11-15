@@ -21,7 +21,7 @@ export default function ImageTitleFavorite({ imageURL, title, eventId, intereste
 
   async function beInterested() {
     try {
-      const response = await fetch(`http://localhost:8080/beInterested/${eventId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/beInterested/${eventId}`, {
         method: "POST",
         credentials: "include"
       })
@@ -58,8 +58,8 @@ export default function ImageTitleFavorite({ imageURL, title, eventId, intereste
     <div className="flex flex-col justify-start items-start w-full">
       <div className="flex w-full relative min-h-[570px]">
         <div
-          className="absolute blur-sm top-0 right-0 bottom-0 left-0" style={{ background: `url(http://localhost:8080/${imageURL.replaceAll(/\\/g, "/")})`, backgroundPosition: "center", backgroundSize: "contain" }} />
-        <Image fill src={`http://localhost:8080/${imageURL.replaceAll(/\\/g, "/")}`} alt="uploadedEventPic" className="rounded-3xl" style={{ objectFit: "contain" }} />
+          className="absolute blur-sm top-0 right-0 bottom-0 left-0" style={{ background: `url(${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/${imageURL.replaceAll(/\\/g, "/")})`, backgroundPosition: "center", backgroundSize: "contain" }} />
+        <Image fill src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/${imageURL.replaceAll(/\\/g, "/")}`} alt="uploadedEventPic" className="rounded-3xl" style={{ objectFit: "contain" }} />
       </div>
 
       <div className="flex items-center justify-between w-full">

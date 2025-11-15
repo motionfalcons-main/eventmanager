@@ -25,7 +25,7 @@ export default function PaymentForm({ ticketQ, ticketPrice, ticketId }: Componen
 
     try {
       setIsBuying(true)
-      const response = await fetch(`http://localhost:8080/buyTicket/${ticketId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/buyTicket/${ticketId}`, {
         method: "POST",
         credentials: "include",
         body: fd

@@ -45,7 +45,7 @@ export default function MultiStepForm({ step, setStep }: ComponentProps) {
 
     try {
       setIsCreating(true)
-      const response = await fetch('http://localhost:8080/admin/createEvent', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/admin/createEvent`, {
         method: "POST",
         credentials: "include",
         body: fd

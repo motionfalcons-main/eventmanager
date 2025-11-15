@@ -41,7 +41,7 @@ export default function InterestedEventsSection() {
         setIsError(false)
         setIsLoading(true)
 
-        const response = await fetch(`http://localhost:8080/interestedEvents?filter=${filterType.filter}&direction=${filterType.direction}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/interestedEvents?filter=${filterType.filter}&direction=${filterType.direction}`, {
           credentials: "include"
         })
 

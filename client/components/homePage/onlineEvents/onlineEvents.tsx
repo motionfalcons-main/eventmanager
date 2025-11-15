@@ -39,7 +39,7 @@ export default function OnlineEvents() {
       try {
         setIsLoading(true)
         setIsError(false)
-        const response = await fetch(`http://localhost:8080/bestFreeEvents?page=${page}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/bestFreeEvents?page=${page}`, {
           credentials: "include"
         })
 

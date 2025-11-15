@@ -40,7 +40,7 @@ export default function HeaderRight() {
 
   async function logOut() {
     try {
-      const response = await fetch('http://localhost:8080/auth/logOut', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/auth/logOut`, {
         method: "POST",
         credentials: "include"
       })

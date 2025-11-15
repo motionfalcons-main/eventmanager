@@ -24,7 +24,7 @@ export default function LoginForm() {
     const fd = Object.fromEntries(formData.entries())
     try {
       setIsLogging(true)
-      const response = await fetch('http://localhost:8080/auth/loginAccount', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/auth/loginAccount`, {
         method: "POST",
         body: JSON.stringify(fd),
         headers: {

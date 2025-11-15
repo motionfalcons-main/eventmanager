@@ -52,7 +52,7 @@ export default function SearchResults({ setFilterSettings, filterSettings }: Com
       try {
         setIsError(false)
         setIsLoading(true)
-        const response = await fetch(`http://localhost:8080/searchEvents?srch=${filterSettings.srch}&location=${filterSettings.location}&eventType=${filterSettings.eventType}&startDate=${filterSettings.startDate}&endDate=${filterSettings.endDate}&category=${filterSettings.category}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/searchEvents?srch=${filterSettings.srch}&location=${filterSettings.location}&eventType=${filterSettings.eventType}&startDate=${filterSettings.startDate}&endDate=${filterSettings.endDate}&category=${filterSettings.category}`, {
           credentials: "include"
         })
 

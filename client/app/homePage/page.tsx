@@ -9,7 +9,7 @@ export default async function Page() {
   const cookie = cookies()
 
   try {
-    const trendingAroundTheWorld = await fetch('http://localhost:8080/trendingWorldEvents?page=6', {
+    const trendingAroundTheWorld = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/trendingWorldEvents?page=6`, {
       headers: { Cookie: (await cookie).toString() }
     })
 

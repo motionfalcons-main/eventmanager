@@ -1,0 +1,40 @@
+services:
+  # Backend API Service
+  - type: web
+    name: eventmanager-backend
+    runtime: node
+    plan: starter
+    buildCommand: cd server && npm install
+    startCommand: cd server && node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+    healthCheckPath: /health
+
+  # Frontend Next.js Service
+  - type: web
+    name: eventmanager-frontend
+    runtime: node
+    plan: starter
+    buildCommand: cd client && npm install && npm run build
+    startCommand: cd client && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      # Set NEXT_PUBLIC_API_URL to your backend service URL after deployment
+      # Example: https://eventmanager-backend.onrender.com
+      - key: NEXT_PUBLIC_API_URL
+        value: https://eventmanager-backend.onrender.com
+
+  # Note: PostgreSQL Database must be created manually in Render Dashboard
+  # After creating the database, add DATABASE_URL to backend service environment variables
+  # Redis Cache (Optional - uncomment if needed)
+  # - type: redis
+  #   name: eventmanager-redis
+  #   plan: starter
+  #   maxmemoryPolicy: allkeys-lru
+

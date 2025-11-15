@@ -7,7 +7,7 @@ export default function Ticket({ ticket }: any) {
 
   async function getInvoice() {
     try {
-      const response = await fetch(`http://localhost:8080/getInvoice/${ticket.eventId + ' ' + ticket.userTicket.userId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/getInvoice/${ticket.eventId + ' ' + ticket.userTicket.userId}`, {
         credentials: "include"
       })
 

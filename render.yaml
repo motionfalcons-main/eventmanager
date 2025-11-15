@@ -18,7 +18,7 @@ services:
     name: eventmanager-frontend
     runtime: node
     plan: starter
-    buildCommand: cd client && npm install && npm run build
+    buildCommand: cd client && npm install --include=dev && npm run build
     startCommand: cd client && npm start
     envVars:
       - key: NODE_ENV
@@ -33,7 +33,7 @@ services:
   # Note: PostgreSQL Database must be created manually in Render Dashboard
   # Go to: New → PostgreSQL → Create database
   # Then add DATABASE_URL to backend service environment variables
-  
+    
   # Redis Cache (Optional - uncomment if needed)
   # - type: redis
   #   name: eventmanager-redis

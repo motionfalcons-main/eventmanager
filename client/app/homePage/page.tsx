@@ -9,10 +9,15 @@ export default async function Page() {
   const cookie = cookies()
 
   try {
+    // Add timeout to prevent hanging
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+    
     const trendingAroundTheWorld = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/trendingWorldEvents?page=6`, {
       headers: { Cookie: (await cookie).toString() },
-      credentials: 'include'
-    })
+      credentials: 'include',
+      signal: controller.signal
+    }).finally(() => clearTimeout(timeoutId))
 
     if (!trendingAroundTheWorld.ok) {
       // If unauthorized, redirect to login
@@ -59,8 +64,9 @@ export default async function Page() {
   } catch (err: unknown) {
     console.error('Error loading home page:', err)
     // Show empty state instead of redirecting to prevent infinite loop
+    // This handles network errors, timeouts, and API errors gracefully
     return (
-      <div className="flex flex-col items-start justify-start">
+      <div className="flex flex-col items-start justify-start min-h-screen">
         <GreetSection countryList={[]} />
         <div className="flex flex-col justify-start items-start px-32 w-full">
           <ExploreCategories />

@@ -19,24 +19,36 @@ export default async function Page() {
       if (trendingAroundTheWorld.status === 401 || trendingAroundTheWorld.status === 440) {
         redirect('/')
       }
-      const resData = await trendingAroundTheWorld.json().catch(() => ({ message: 'Failed to fetch data' }))
-      throw new Error(resData.message || 'Failed to load events')
+      // For other errors (like 404 - no events), show empty state instead of redirecting
+      return (
+        <div className="flex flex-col items-start justify-start">
+          <GreetSection countryList={[]} />
+          <div className="flex flex-col justify-start items-start px-32 w-full">
+            <ExploreCategories />
+            <div className="flex flex-col justify-start items-start gap-32 w-full">
+              <TrendingEvents trendingList={[]} isLimit={true} />
+              <PopularEvents />
+              <OnlineEvents />
+            </div>
+          </div>
+        </div>
+      )
     }
 
     const trendingList = await trendingAroundTheWorld.json()
 
-    // Ensure data structure is correct
-    if (!trendingList || !trendingList.foundEvents || !trendingList.countryList) {
-      throw new Error('Invalid data structure received')
-    }
+    // Handle empty or invalid data gracefully
+    const foundEvents = trendingList?.foundEvents || []
+    const countryList = trendingList?.countryList || []
+    const isLimit = trendingList?.isLimit || false
 
     return (
       <div className="flex flex-col items-start justify-start">
-        <GreetSection countryList={trendingList.countryList} />
+        <GreetSection countryList={countryList} />
         <div className="flex flex-col justify-start items-start px-32 w-full">
           <ExploreCategories />
           <div className="flex flex-col justify-start items-start gap-32 w-full">
-            <TrendingEvents trendingList={trendingList.foundEvents || []} isLimit={trendingList.isLimit || false} />
+            <TrendingEvents trendingList={foundEvents} isLimit={isLimit} />
             <PopularEvents />
             <OnlineEvents />
           </div>
@@ -46,6 +58,19 @@ export default async function Page() {
 
   } catch (err: unknown) {
     console.error('Error loading home page:', err)
-    redirect('/')
+    // Show empty state instead of redirecting to prevent infinite loop
+    return (
+      <div className="flex flex-col items-start justify-start">
+        <GreetSection countryList={[]} />
+        <div className="flex flex-col justify-start items-start px-32 w-full">
+          <ExploreCategories />
+          <div className="flex flex-col justify-start items-start gap-32 w-full">
+            <TrendingEvents trendingList={[]} isLimit={true} />
+            <PopularEvents />
+            <OnlineEvents />
+          </div>
+        </div>
+      </div>
+    )
   }
 }

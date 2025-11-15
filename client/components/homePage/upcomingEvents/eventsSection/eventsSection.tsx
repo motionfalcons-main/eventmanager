@@ -23,6 +23,14 @@ interface ComponentProps {
 
 export default function EventsSection({ eventList }: ComponentProps) {
 
+  if (!eventList || eventList.length === 0) {
+    return (
+      <div className="flex w-full justify-center items-center min-h-[200px]">
+        <p className="text-[24px] text-[#2D2C3C] font-semibold">No events found. Check back later!</p>
+      </div>
+    )
+  }
+
   return (
     <div className="grid grid-cols-3 gap-y-5 w-full">
       {eventList.map((event: event) => <EventCard key={event.id} event={event} />)}

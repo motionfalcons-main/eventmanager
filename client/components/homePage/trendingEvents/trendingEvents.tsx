@@ -27,7 +27,7 @@ interface ComponentProps {
 
 export default function TrendingEvents({ trendingList, isLimit }: ComponentProps) {
 
-  const [eventList, setEventList] = useState<event[]>(trendingList)
+  const [eventList, setEventList] = useState<event[]>(trendingList || [])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isMaxedEvents, setIsMaxedEvents] = useState<boolean>(isLimit)
   const [page, setPage] = useState<number>(6)
@@ -47,8 +47,8 @@ export default function TrendingEvents({ trendingList, isLimit }: ComponentProps
         }
 
         const resData = await response.json()
-        setEventList(resData.foundEvents)
-        setIsMaxedEvents(resData.isLimit)
+        setEventList(resData.foundEvents || [])
+        setIsMaxedEvents(resData.isLimit || false)
         setIsLoading(false)
       } catch (err: unknown) {
         const error = err as { message: string }

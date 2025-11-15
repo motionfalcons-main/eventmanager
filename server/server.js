@@ -35,13 +35,21 @@ const fileFilter = (req, file, cb) => {
 /* Redis Setup - Optional, app will work without Redis */
 
 async function createRedis() {
+  // Only try to connect if Redis URL is provided or explicitly enabled
+  if (!process.env.REDIS_URL && !process.env.REDIS_HOST) {
+    console.log('Redis not configured - app will run without caching')
+    return
+  }
+  
   try {
     redisClient.on('error', err => {
       console.log('Redis Client Error (non-fatal):', err.message)
       // Don't throw - allow app to continue without Redis
     })
+    redisClient.on('connect', () => {
+      console.log('Redis connected successfully')
+    })
     await redisClient.connect()
-    console.log('Redis connected successfully')
   } catch (err) {
     console.log('Redis connection failed (non-fatal):', err.message)
     console.log('App will continue without Redis caching')

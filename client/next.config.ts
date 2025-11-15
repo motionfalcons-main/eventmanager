@@ -13,18 +13,29 @@ const nextConfig: NextConfig = {
   },
   // Ensure proper module resolution with path aliases
   webpack: (config, { isServer }) => {
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': path.resolve(__dirname),
-    };
+    const alias = config.resolve.alias || {};
+    alias['@'] = path.resolve(__dirname);
+    config.resolve.alias = alias;
+    
     // Ensure extensions are resolved correctly
+    if (!config.resolve.extensions) {
+      config.resolve.extensions = [];
+    }
     config.resolve.extensions = [
       '.tsx',
       '.ts',
       '.jsx',
       '.js',
-      ...(config.resolve.extensions || [])
+      ...config.resolve.extensions.filter(ext => !['.tsx', '.ts', '.jsx', '.js'].includes(ext))
     ];
+    
+    // Ensure modules are resolved from the correct directories
+    config.resolve.modules = [
+      path.resolve(__dirname, 'node_modules'),
+      'node_modules',
+      ...(config.resolve.modules || [])
+    ];
+    
     return config;
   }
   /* config options here */

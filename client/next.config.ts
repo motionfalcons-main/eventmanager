@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
@@ -10,10 +11,11 @@ const nextConfig: NextConfig = {
       pathname: '**'
     }]
   },
-  // Ensure proper module resolution
+  // Ensure proper module resolution with path aliases
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
+      '@': path.resolve(__dirname),
     };
     return config;
   }

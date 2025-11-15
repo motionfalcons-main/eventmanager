@@ -12,11 +12,19 @@ const nextConfig: NextConfig = {
     }]
   },
   // Ensure proper module resolution with path aliases
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(__dirname),
     };
+    // Ensure extensions are resolved correctly
+    config.resolve.extensions = [
+      '.tsx',
+      '.ts',
+      '.jsx',
+      '.js',
+      ...(config.resolve.extensions || [])
+    ];
     return config;
   }
   /* config options here */

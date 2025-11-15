@@ -10,16 +10,25 @@ export default async function Page() {
 
   try {
     const trendingAroundTheWorld = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/trendingWorldEvents?page=6`, {
-      headers: { Cookie: (await cookie).toString() }
+      headers: { Cookie: (await cookie).toString() },
+      credentials: 'include'
     })
 
     if (!trendingAroundTheWorld.ok) {
-      const resData = await trendingAroundTheWorld.json()
-      const error = new Error(resData.message)
-      throw error
+      // If unauthorized, redirect to login
+      if (trendingAroundTheWorld.status === 401 || trendingAroundTheWorld.status === 440) {
+        redirect('/')
+      }
+      const resData = await trendingAroundTheWorld.json().catch(() => ({ message: 'Failed to fetch data' }))
+      throw new Error(resData.message || 'Failed to load events')
     }
 
     const trendingList = await trendingAroundTheWorld.json()
+
+    // Ensure data structure is correct
+    if (!trendingList || !trendingList.foundEvents || !trendingList.countryList) {
+      throw new Error('Invalid data structure received')
+    }
 
     return (
       <div className="flex flex-col items-start justify-start">
@@ -27,7 +36,7 @@ export default async function Page() {
         <div className="flex flex-col justify-start items-start px-32 w-full">
           <ExploreCategories />
           <div className="flex flex-col justify-start items-start gap-32 w-full">
-            <TrendingEvents trendingList={trendingList.foundEvents} isLimit={trendingList.isLimit} />
+            <TrendingEvents trendingList={trendingList.foundEvents || []} isLimit={trendingList.isLimit || false} />
             <PopularEvents />
             <OnlineEvents />
           </div>
@@ -36,7 +45,7 @@ export default async function Page() {
     )
 
   } catch (err: unknown) {
-    const error = err as { message: string, options: number }
+    console.error('Error loading home page:', err)
     redirect('/')
   }
 }

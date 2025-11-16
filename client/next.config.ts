@@ -12,12 +12,19 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    remotePatterns: [{
-      protocol: 'http',
-      hostname: 'localhost',
-      port: '8080',
-      pathname: '**'
-    }]
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8080',
+        pathname: '**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'eventmanager-backend-4r05.onrender.com',
+        pathname: '**'
+      }
+    ]
   },
   // Ensure proper module resolution with path aliases
   webpack: (config, { isServer }) => {

@@ -30,7 +30,8 @@ export default function CreateAccountForm() {
         body: JSON.stringify(fd),
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        credentials: "include"
       })
 
       if (!response.ok) {

@@ -20,7 +20,7 @@ async function main() {
     {
       title: 'Tech Innovators Summit',
       category: 'Technology',
-      location: 'Germany',
+      location: 'Berlin',
       description: 'Join leading innovators to discuss the future of AI, cloud, and edge computing.',
       eventType: 'paid',
       ticketQuantity: 200,
@@ -32,7 +32,7 @@ async function main() {
     {
       title: 'Berlin Music Fest',
       category: 'Music',
-      location: 'Germany',
+      location: 'Berlin',
       description: 'A weekend of live performances from top artists across Europe.',
       eventType: 'paid',
       ticketQuantity: 500,
@@ -44,7 +44,7 @@ async function main() {
     {
       title: 'Paris Art Expo',
       category: 'Art',
-      location: 'France',
+      location: 'Paris',
       description: 'Explore modern art from emerging and established artists.',
       eventType: 'free',
       ticketQuantity: 0,
@@ -56,7 +56,7 @@ async function main() {
     {
       title: 'Lisbon Startup Meetup',
       category: 'Business',
-      location: 'Portugal',
+      location: 'Lisbon',
       description: 'Network with founders, investors, and operators building the next wave of startups.',
       eventType: 'free',
       ticketQuantity: 0,
@@ -68,7 +68,7 @@ async function main() {
     {
       title: 'Rome Food Carnival',
       category: 'Food',
-      location: 'Italy',
+      location: 'Rome',
       description: 'Taste the best of Mediterranean cuisine with live cooking shows.',
       eventType: 'paid',
       ticketQuantity: 300,
@@ -76,6 +76,30 @@ async function main() {
       startDate: daysFromNow(20),
       endDate: daysFromNow(21),
       imageURL: 'eventImages/sample-food.jpg',
+    },
+    {
+      title: 'Madrid Football Fan Zone',
+      category: 'Sports',
+      location: 'Madrid',
+      description: 'Match screenings, games, and meetups for football fans.',
+      eventType: 'paid',
+      ticketQuantity: 400,
+      ticketPrice: 15,
+      startDate: daysFromNow(9),
+      endDate: daysFromNow(9),
+      imageURL: 'eventImages/sample-sports.jpg',
+    },
+    {
+      title: 'Amsterdam Tech Night',
+      category: 'Technology',
+      location: 'Amsterdam',
+      description: 'Evening lightning talks and networking with local devs.',
+      eventType: 'free',
+      ticketQuantity: 0,
+      ticketPrice: 0,
+      startDate: daysFromNow(12),
+      endDate: daysFromNow(12),
+      imageURL: 'eventImages/sample-meetup.jpg',
     },
   ]
 

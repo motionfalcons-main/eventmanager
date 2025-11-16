@@ -481,7 +481,8 @@ exports.searchEvents = async (req, res, next) => {
     }
 
     if (filterObject.location) {
-      whereObject.location = filterObject.location
+      // Case-insensitive partial match on city/location (Postgres)
+      whereObject.location = { [Op.iLike]: `%${filterObject.location}%` }
     }
 
     if (filterObject.srch) {

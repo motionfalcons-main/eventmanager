@@ -25,7 +25,7 @@ router.post('/buyTicket/:ticketId', [
     .isLength({ min: 3 })
     .withMessage('Full Name must be minimum 3 characters!'),
   body('phone')
-    .isEmpty()
+    .notEmpty()
     .withMessage('Please provide a phone number!'),
   body('email')
     .isEmail()

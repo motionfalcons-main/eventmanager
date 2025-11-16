@@ -95,6 +95,8 @@ Ticket.belongsToMany(User, { through: UserTicket })
 
 
 /* Middlewares */
+// Trust Render's proxy so secure cookies work behind HTTPS
+app.set('trust proxy', 1)
 app.use(cors({
   credentials: true,
   origin: process.env.FRONTEND_URL || 'http://localhost:3000'
@@ -112,7 +114,9 @@ app.use( // Session store for Sequelize with Dialect PostgreSQL.
     }),
     resave: false,
     saveUninitialized: false,
-    cookie: { httpOnly: true, secure: false, maxAge: 24 * 60 * 60 * 1000 } // Will change secure after the project is ready to go production.
+    cookie: process.env.NODE_ENV === 'production'
+      ? { httpOnly: true, secure: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 }
+      : { httpOnly: true, secure: false, sameSite: 'lax', maxAge: 24 * 60 * 60 * 1000 }
   })
 );
 

@@ -13,7 +13,8 @@ router.get('/similarEvents', authCheck, controller.fetchSimilarEvents)
 router.get('/myTickets', authCheck, controller.fetchMyTickets)
 router.get('/getInvoice/:invoiceId', authCheck, controller.getInvoice)
 router.get('/interestedEvents', authCheck, controller.interestedEvents)
-router.get('/searchEvents', authCheck, controller.searchEvents)
+// Make search public so users can filter without logging in
+router.get('/searchEvents', controller.searchEvents)
 
 /* P O S T S */
 router.post('/beInterested/:eventId', controller.beInterested)

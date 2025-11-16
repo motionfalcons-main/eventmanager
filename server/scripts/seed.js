@@ -18,6 +18,18 @@ async function main() {
 
   const samples = [
     {
+      title: 'Today Demo Meetup',
+      category: 'Community',
+      location: 'Berlin',
+      description: 'Quick demo meetup seeded to always show up under Today.',
+      eventType: 'free',
+      ticketQuantity: 0,
+      ticketPrice: 0,
+      startDate: daysFromNow(0), // today
+      endDate: daysFromNow(0),
+      imageURL: 'eventImages/sample-today.jpg',
+    },
+    {
       title: 'Tech Innovators Summit',
       category: 'Technology',
       location: 'Berlin',

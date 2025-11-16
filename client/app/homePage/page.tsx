@@ -31,7 +31,7 @@ export default function Page() {
         
         // Add timeout to prevent hanging
         const controller = new AbortController()
-        const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
         
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/trendingWorldEvents?page=6`, {
           credentials: 'include',
@@ -39,13 +39,7 @@ export default function Page() {
         }).finally(() => clearTimeout(timeoutId))
 
         if (!response.ok) {
-          // If unauthorized, redirect to login (only once)
-          if ((response.status === 401 || response.status === 440) && !hasRedirected.current) {
-            hasRedirected.current = true
-            window.location.href = '/' // Use window.location instead of router.push to prevent re-renders
-            return
-          }
-          // For other errors, show empty state
+          // For 401/440 or any other errors, show empty state instead of redirecting
           setTrendingList({ foundEvents: [], countryList: [], isLimit: true })
           setIsLoading(false)
           return
